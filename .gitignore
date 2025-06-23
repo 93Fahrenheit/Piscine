@@ -1,0 +1,33 @@
+# Fichiers spécifiques à macOS
+.DS_Store
+
+# Fichiers temporaires d’éditeur
+*.swp        # fichiers temporaires de Vim
+*.swo
+*~           # fichiers de sauvegarde
+*.tmp        # fichiers temporaires génériques
+
+# VS Code
+.vscode/
+
+# binaires ou fichiers compilés
+a.out
+*.o
+*.out
+*.exe
+
+# Archives et sauvegardes
+*.tar
+*.gz
+*.zip
+*.rar
+
+# Makefile outputs
+*.dSYM/
+*.obj
+
+# Projets C de 42 (bonne pratique)
+libft/
+gnl/
+ft_printf/
+build/
