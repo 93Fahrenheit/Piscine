@@ -1,1 +1,6 @@
 ls -tmp
+
+#	Option	Effet
+#	-t	Trie les fichiers par date de dernière modification du contenu (la plus utilisée)
+#	-m	Affiche tout sur une seule ligne, séparé par virgules
+#	-p	Ajoute / après les dossiers
