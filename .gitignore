@@ -2,10 +2,10 @@
 .DS_Store
 
 # Fichiers temporaires d’éditeur
-*.swp        # fichiers temporaires de Vim
+*.swp       
 *.swo
-*~           # fichiers de sauvegarde
-*.tmp        # fichiers temporaires génériques
+*~           
+*.tmp        
 
 # VS Code
 .vscode/
@@ -26,8 +26,6 @@ a.out
 *.dSYM/
 *.obj
 
-# Projets C de 42 (bonne pratique)
-libft/
-gnl/
-ft_printf/
-build/
+# Test gitignore
+fichier_test1
+fichier_test2

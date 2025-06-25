@@ -26,6 +26,43 @@
 # 3e bit	x	1
 #Si un droit est présent, on ajoute sa valeur à la somme pour ce groupe.
 
+------------------------------------------------------------
+Autre façon d'utiliser CHMOD 
+------------------------------------------------------------
+
+➤ Syntaxe :
+chmod [u/g/o/a][+/-/=][r/w/x] nom_du_fichier
+
+Lettres possibles :
+- u → user (propriétaire)
+- g → group
+- o → others (les autres)
+- a → all (tout le monde)
+
+Opérations :
+- + → ajouter un droit
+- - → retirer un droit
+- = → définir exactement les droits (remplace les existants)
+
+Droits :
+- r → read (lecture)
+- w → write (écriture)
+- x → execute (exécution)
+
+------------------------------------------------------------
+Exemples utiles :
+
+chmod +x script.sh          → ajoute x à tout le monde
+chmod u+x script.sh         → ajoute x au user uniquement
+chmod g-w fichier.txt       → enlève w au group
+chmod o=r fichier.txt       → only read for others
+chmod a+x fichier           → ajoute x à tous les utilisateurs
+chmod ug+r fichier          → ajoute lecture à user + group
+chmod o= fichier            → enlève tous les droits aux autres
+
+------------------------------------------------------------
+
+
 #LECTURE DE LA SORTIE ls -l / READING ls -l OUTPUT
 # -rw-r--r--  1  farahelab  staff  733  1 jui 23:42  testShell00
 # │           │   │          │      │    │     │      └── Nom du fichier
