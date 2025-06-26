@@ -31,6 +31,15 @@ a.out
 ✅ # fichier temporaire
    *.tmp
 
+/!\ utiliser '/' dans les motifs
+
+Motif		Ce qu’il ignore
+
+.vscode		Fichier ou dossier nommé .vscode
+
+.vscode/	Uniquement le dossier .vscode et son contenu
+
+
 ────────────────────────────────────────────
 2. VÉRIFIER SI UN FICHIER EST IGNORÉ
 ────────────────────────────────────────────
