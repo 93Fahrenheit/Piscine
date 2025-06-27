@@ -1,0 +1,101 @@
+## ✅ Commande à écrire dans le fichier clean :
+
+find . \( -name '*~' -o -name '#*#' \) -exec rm -v {} \;
+
+---
+
+# 🔍 DÉCRYPTAGE EN DÉTAIL
+
+1. find .
+- `find` est une commande pour chercher des fichiers ou dossiers.
+- `.` indique que tu veux commencer la recherche dans le **dossier courant**.
+- `find` explore récursivement tous les **sous-dossiers** à partir de ce point.
+
+📘 Exemple : si tu es dans `~/Shell_00/ex08`, alors `find .` cherche dans `ex08` et tout ce qu’il contient.
+
+---
+
+2. \( -name '*~' -o -name '#*#' \)
+
+a. `-name '*~'`
+- Cible les fichiers dont le nom se **termine par `~`**.
+- Le caractère `*` signifie « n’importe quelle suite de caractères ».
+- Donc `*~` : "tout ce qui finit par ~"
+
+✅ Exemples :  
+- `main.c~` ✅  
+- `mon_script~` ✅  
+- `~test` ❌
+
+b. `-name '#*#'`
+- Cible les fichiers qui **commencent ET finissent par `#`**.
+- `#*#` signifie : « un `#`, suivi de n’importe quoi, suivi d’un `#` ».
+
+✅ Exemples :  
+- `#temp#` ✅  
+- `#abc123#` ✅  
+- `abc#` ❌  
+- `#abc` ❌
+
+c. `-o`
+- Cela signifie **OU** (logique).
+- Donc ici :
+→ Trouve les fichiers **qui terminent par `~` OU qui sont encadrés par `#`**.
+
+d. `\( ... \)`
+- Les parenthèses **groupent** les conditions.
+- On les **échappe** (`\(` et `\)`) pour que Bash ne les interprète pas (comme une subshell par exemple).
+- Sans parenthèses, `-o` pourrait causer une mauvaise interprétation.
+
+---
+
+3. -exec rm -v {} \;
+
+a. `-exec ... \;`
+- Option spéciale de `find` : permet **d’exécuter une commande** sur chaque fichier trouvé.
+- Tout ce qui est entre `-exec` et `\;` est **exécuté pour chaque résultat** trouvé.
+
+b. `rm -v`
+- `rm` : commande pour **supprimer** un fichier.
+- `-v` (**verbose**) : affiche un message pour chaque fichier supprimé, comme :
+
+removed 'mon_fichier~'
+
+
+
+
+c. `{}` (accolades)
+- Représente le nom du fichier trouvé par `find`.
+- Il est **remplacé automatiquement** par chaque fichier correspondant.
+
+Donc :
+
+rm -v {}
+
+devient :
+
+rm -v ./test1~
+
+(puis pour chaque fichier suivant)
+
+d. `\;`
+- Obligatoire pour **terminer** l’option `-exec`.
+- Le `\` est important : il empêche que `;` soit interprété par le shell comme une commande séparée.
+
+---
+
+# 🧪 Mini-analogie
+Imagine que tu demandes à `find` :
+
+> "Va chercher tous les fichiers qui finissent par `~` ou encadrés par `#`, puis pour chacun d’eux, lance une commande `rm -v` pour le supprimer et affiche ce que tu fais."
+
+---
+
+# 🧩 BONUS – Pourquoi tout tenir en une seule commande ?
+Parce que l'exercice interdit l'utilisation de `;`, `&&`, ou d'autres **séparateurs de commandes** dans le fichier `clean`.
+
+Donc on ne peut **pas faire** :
+find ... && rm ...
+
+
+✅ C’est pourquoi **tout doit tenir dans un seul appel à `find`**, avec une seule commande `-exec`.

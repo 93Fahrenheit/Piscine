@@ -1,0 +1,62 @@
+## 🎯 Objectif de l'exercice
+Créer un fichier `ft_magic` capable de détecter les fichiers appelés **"42 file"**, c’est-à-dire :
+- contenant **la chaîne "42" exactement au 42ᵉ octet** (offset 41)
+- et être détecté par la commande `file -m ft_magic nom_de_fichier`
+
+---
+
+## 🧠 Théorie : Qu’est-ce qu’un fichier magique ?
+
+Un **fichier magique** est un fichier spécial utilisé par la commande `file` pour reconnaître des types de fichiers **à partir de leur contenu binaire**, et non leur extension.
+
+Un fichier magique contient des **règles de détection** avec la structure suivante :
+
+OFFSET TYPE CONTENU_CHERCHÉ NOM_AFFICHÉ
+
+- OFFSET : position où on cherche la donnée (commence à 0)
+- TYPE : type de donnée attendue (string, byte, etc.)
+- CONTENU_CHERCHÉ : valeur à chercher à cette position
+- NOM_AFFICHÉ : le nom du "type" personnalisé à afficher
+
+---
+
+## ✅ Structure du fichier `ft_magic`
+
+Voici ce que tu dois écrire dans `ft_magic` :
+
+41 string 42 42 file
+
+🔍 Explication :
+- `41` → offset où la chaîne doit se trouver (42ᵉ octet car on commence à 0)
+- `string` → on cherche une chaîne de caractères
+- `42` → contenu exact à détecter
+- `42 file` → le texte affiché par la commande `file`
+
+---
+
+## 🔧 Générer un fichier de test (fichier binaire)
+
+Objectif : créer un fichier avec **"42" exactement au 42ᵉ octet**
+
+```bash
+dd if=/dev/zero bs=1 count=41 status=none > testfile && echo -n "42" >> testfile
+🔍 Explication :
+
+Crée 41 octets nuls (\0)
+
+Puis ajoute "42" à la fin → ce qui place "4" à l’offset 41 et "2" à 42
+
+Total : 43 octets
+
+Vérification avec hexdump :
+
+hexdump -C testfile
+On dois voir :
+
+00000020  00 00 00 00 00 00 00 00  34 32                    |........42|
+
+🧪 Tester le fichier magique
+file -m ft_magic testfile
+
+Si tout est bon, la sortie doit être :
+testfile: 42 file
