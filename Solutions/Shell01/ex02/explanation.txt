@@ -1,0 +1,45 @@
+📜 Commande finale à mettre dans `find_sh.sh` :
+find . -type f -name "*.sh" -exec basename {} .sh \;
+
+---
+
+🔍 DÉCRYPTAGE EN DÉTAIL :
+
+1. `find .`
+→ Cherche dans le dossier courant et tous ses sous-dossiers
+
+2. `-type f`
+→ Ne prend en compte que les **fichiers** (et pas les dossiers)
+
+3. `-name "*.sh"`
+→ Sélectionne les fichiers **dont le nom se termine par `.sh`**
+
+4. `-exec ... \;`
+→ Permet de **lancer une commande** pour chaque fichier trouvé
+
+⚠️ `-exec` n’est **pas une commande Bash**, c’est une **option spéciale de `find`**.  
+Elle sert uniquement à **appliquer une commande à chaque fichier trouvé**.
+
+5. `basename {} .sh`
+→ Retire le chemin et l’extension `.sh` du fichier
+→ `{}` est remplacé automatiquement par le chemin du fichier trouvé
+
+6. `\;`
+→ Termine l’expression `-exec`
+→ Le `\` est nécessaire pour **échapper** le point-virgule et éviter qu’il soit interprété par le shell
+
+---
+
+
+📌 À retenir : pourquoi on utilise `-exec` ici ?
+Parce qu’on veut **exécuter une commande (`basename`) sur chaque fichier trouvé**.  
+C’est propre à `find`. Dans une commande Bash classique, `basename` s’utilise **sans `-exec`**.
+
+---
+
+📚 En bonus : où trouver les docs utiles ?
+
+- man find
+- man basename
+- man 1 find → (pour bien voir la partie sur `-exec`)
+- man 1 basename → (section utilisateur classique)

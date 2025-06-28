@@ -1,0 +1,90 @@
+🔸 1. 📦 Qu’est-ce qu’un *utilisateur (user)* ?
+Un *user* est un compte sur ton système Unix (ou Linux/Mac).
+Exemples de users : `root`, `farahelab`, `daemon`, `nobody`, etc.
+
+Chaque utilisateur peut :
+- appartenir à un ou plusieurs *groupes*
+- avoir des droits selon les groupes dont il fait partie
+
+---
+
+🔸 2. 👥 Qu’est-ce qu’un *groupe (group)* ?
+Un *group* regroupe plusieurs utilisateurs qui partagent les mêmes permissions.
+Exemple :
+- Le groupe `staff` contient tous les utilisateurs qui ont le droit de créer/modifier des fichiers dans certains dossiers.
+
+Un utilisateur peut appartenir à plusieurs groupes simultanément.
+
+---
+
+🔸 3. 🌍 Qu’est-ce qu’une *variable d’environnement* ?
+C’est une variable accessible partout dans le shell ou par les scripts.
+
+Définir une variable d’environnement :
+export NOM_VARIABLE=valeur
+
+Exemple pour l'exercice :
+export FT_USER=daemon
+
+🔸 4. 🧪 Commandes utiles
+
+▶️ id :
+Permet de voir l’ID utilisateur, groupes, etc.
+
+id -Gn nom_utilisateur
+-G : affiche les groupes (ID)
+
+-n : affiche les noms (pas les numéros)
+
+Exemple :
+
+id -Gn farahelab
+→ staff everyone localaccounts _appserverusr ...
+
+▶️ tr :
+Permet de transformer/remplacer des caractères.
+
+tr ' ' ','
+→ remplace tous les espaces par des virgules.
+
+🔸 5. 📜 Script final à écrire dans print_groups.sh
+
+#!/bin/bash
+id -Gn $FT_USER | tr ' ' ','
+$FT_USER → remplace la variable par sa valeur actuelle (ex: daemon)
+
+🔸 6. ⚠️ Astuces et erreurs fréquentes
+
+Si $FT_USER est vide, id renvoie les groupes du user courant
+
+Si le user n’existe pas → erreur : id: utilisateur: no such user
+
+Pas de echo, ni de texte en trop : seule la liste doit être affiché
+
+💡 export FT_USER=daemon ne crée pas un utilisateur, ni un groupe.
+Il crée simplement une variable d’environnement nommée FT_USER, et lui donne la valeur "daemon".
+
+FT_USER = le nom de la variable
+
+daemon = une chaîne de caractères (ici, le nom d’un utilisateur déjà existant dans le système)
+
+En d'autres termes :
+
+export FT_USER=daemon
+signifie : « Je définis une variable accessible dans tout le shell, et je dis que sa valeur est daemon. »
+
+⚠️ Important :
+Cette commande ne crée pas le compte daemon !
+L'utilisateur daemon existe déjà sur tous les systèmes Unix/Linux/Mac : c’est un user système standard.
+
+Si tu fais :
+
+id -Gn $FT_USER
+le shell remplace $FT_USER par daemon, donc tu obtiens :
+
+id -Gn daemon
+
+🧪 Vérifie :
+
+echo $FT_USER
+➡️ Te renverra : daemon (ou ce que tu as mis).

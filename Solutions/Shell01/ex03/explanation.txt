@@ -1,0 +1,37 @@
+🧠 Objectif
+Tu dois compter :
+
+les fichiers réguliers (-type f)
+
+les dossiers (-type d)
+dans le répertoire courant (.) et tous ses sous-dossiers, y compris . lui-même.
+
+✅ Commande à utiliser : find
+La commande find permet de :
+
+Explorer de manière récursive (donc tous les sous-dossiers),
+
+Filtrer selon des critères comme le type (-type f ou -type d),
+
+Et avec | wc -l, on peut compter les résultats.
+
+🧪 Syntaxe détaillée :
+find . \( -type f -o -type d \) | wc -l
+
+🔍 Explication ligne par ligne
+
+find . → commence la recherche à partir du répertoire courant.
+
+\( ... -o ... \) → groupe les conditions :
+
+-type f → fichier régulier
+
+-o → OU logique
+
+-type d → dossier
+
+| wc -l → compte le nombre de lignes sorties par find, donc le nombre total d’éléments trouvés.
+
+✅ Cette commande inclut bien le dossier . lui-même dans le comptage.
+
+
