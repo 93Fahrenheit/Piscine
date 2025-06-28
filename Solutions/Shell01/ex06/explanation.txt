@@ -1,0 +1,52 @@
+📌 Exemple :
+Si la commande `ls -l` affiche :
+total 4  
+-rw-r--r-- 1 user group ... file1  
+-rw-r--r-- 1 user group ... file2  
+-rw-r--r-- 1 user group ... file3  
+-rw-r--r-- 1 user group ... file4  
+
+Le script doit afficher :
+total 4  
+-rw-r--r-- 1 user group ... file2  
+-rw-r--r-- 1 user group ... file4  
+
+✅ CONTENU DU FICHIER skip.sh :
+Une seule ligne :
+ls -l | sed -n 'p;n'
+
+---
+
+🔧 DÉCRYPTAGE DE LA COMMANDE
+
+📌 `ls -l`
+- Affiche la liste des fichiers avec les détails.
+- La première ligne (commençant par `total`) est aussi prise en compte.
+
+📌 `|` (pipe)
+- Envoie le résultat de `ls -l` dans une autre commande, ici `sed`.
+
+📌 `sed`
+- C’est un **éditeur de flux** (stream editor).
+- Il lit **ligne par ligne**, et peut :
+  - afficher (`p`)
+  - remplacer (`s`)
+  - supprimer (`d`)
+  - filtrer, etc.
+- Par défaut, `sed` affiche **chaque ligne** après traitement.
+
+🔍 Option `-n` :
+- Demande à `sed` de **ne rien afficher automatiquement**.
+- Cela veut dire qu’on doit dire explicitement quelles lignes on veut afficher avec la commande `p`.
+
+🔍 Motif `'p;n'` :
+- C’est une **séquence d’actions**, exécutée sur chaque ligne lue.
+  - `p` → print : affiche la ligne courante
+  - `n` → next : passe à la ligne suivante **sans l'afficher**
+
+🔁 Que se passe-t-il ?
+1. `sed` lit la ligne 1 → `p` → elle s'affiche
+2. `sed` lit la ligne 2 → `n` → elle est ignorée (non affichée)
+3. ligne 3 → `p` → affichée
+4. ligne 4 → `n` → ignorée
+... etc

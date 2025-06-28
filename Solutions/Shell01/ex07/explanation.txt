@@ -1,0 +1,124 @@
+📘 1. Qu’est-ce que /etc/passwd ?
+──────────────────────────────────────────────
+C’est un fichier système contenant les informations des utilisateurs. Chaque ligne correspond à un utilisateur et est structurée ainsi :
+login:x:UID:GID:commentaire:home:shell
+
+Exemple :
+root:x:0:0:root:/root:/bin/bash
+
+Seul le premier champ (avant les deux-points `:`) nous intéresse ici : c’est le login.
+
+──────────────────────────────────────────────
+🔧 2. Ligne de commande complète
+──────────────────────────────────────────────
+cat /etc/passwd | grep -v '^#' | sed -n 'n;p' | cut -d ':' -f1 | rev | sort -r | sed -n "${FT_LINE1},${FT_LINE2}p" | tr '\n' ',' | sed 's/,/, /g' | sed 's/, $/./'
+
+──────────────────────────────────────────────
+🧠 3. Explication détaillée étape par étape
+──────────────────────────────────────────────
+
+▶ `cat /etc/passwd`
+→ Affiche le contenu du fichier `/etc/passwd`.
+
+▶ `grep -v '^#'`
+→ Supprime les lignes de commentaires.
+- `grep` est un outil de filtrage de texte.
+- `-v` inverse le filtre : on exclut ce qui matche.
+- `'^#'` est une expression régulière qui cible les lignes commençant (`^`) par un dièse (`#`), typiquement des commentaires.
+
+▶ `sed -n 'n;p'`
+→ Affiche une ligne sur deux, en commençant par la deuxième.
+- `sed` est un éditeur de flux.
+- `-n` désactive l'affichage automatique.
+- `'n;p'` est une commande double :
+  - `n` saute une ligne (la première)
+  - `p` affiche la suivante
+  Ce schéma se répète : une ligne est sautée, la suivante est affichée.
+
+▶ `cut -d ':' -f1`
+→ Coupe chaque ligne au séparateur `:` et garde la 1ère colonne (le login).
+- `cut` est utilisé pour extraire des champs.
+- `-d ':'` indique que le séparateur est le caractère `:`.
+- `-f1` veut dire « ne garder que le premier champ ».
+
+▶ `rev`
+→ Inverse chaque mot (chaîne de caractères).
+Exemple : `marvin` devient `nivrám`
+
+▶ `sort -r`
+→ Trie les lignes dans l’ordre alphabétique inversé.
+- `sort` trie ligne par ligne.
+- `-r` inverse l’ordre (de Z vers A).
+
+▶ `sed -n "${FT_LINE1},${FT_LINE2}p"`
+→ Affiche les lignes entre les numéros FT_LINE1 et FT_LINE2.
+- `${FT_LINE1}` est une variable d’environnement (ex. : 7)
+- `sed -n '7,15p'` affichera les lignes 7 à 15 (incluses).
+- Le `-n` empêche `sed` d'afficher toutes les lignes : seules celles indiquées par la plage `7,15` sont affichées grâce à `p` (print).
+
+▶ `tr '\n' ','`
+→ Remplace tous les sauts de ligne par des virgules.
+- `tr` signifie « translate ».
+- `'\n'` est le caractère de retour à la ligne.
+- `','` est le caractère de remplacement.
+
+▶ `sed 's/,/, /g'`
+→ Ajoute un espace après chaque virgule.
+- `s/,/, /g` est une commande de substitution :
+  - `s` → substitution
+  - la 1ère `,` → motif à chercher
+  - la 2e `, ` → ce par quoi on remplace
+  - `g` → globalement (toutes les virgules sur une ligne)
+
+▶ `sed 's/, $/./'`
+→ Remplace la dernière virgule+espace par un point final.
+- `s/, $/./` :
+  - `, $` signifie « virgule suivie d’un espace en fin de ligne »
+  - on remplace ça par `.`
+
+──────────────────────────────────────────────
+📌 Remarques importantes :
+──────────────────────────────────────────────
+- La commande doit être en **une seule ligne**.
+- Il ne faut pas de retour à la ligne dans la sortie (sauf celui automatique en fin d’affichage terminal).
+- Toutes les variables `${FT_LINE1}` et `${FT_LINE2}` doivent être exportées avant l’exécution :
+  ```bash
+  export FT_LINE1=7
+  export FT_LINE2=15
+──────────────────────────────────────────────
+🧪 Exemple de test :
+──────────────────────────────────────────────
+export FT_LINE1=7
+export FT_LINE2=15
+bash r_dwssap.sh | cat -e
+
+Tu obtiendras une sortie comme :
+sstq_, sorebrek_brk_, soibten_, sergtsop_, scodved_, rlaxcm_, rgmecived_, revreswodniw_, revressta_.
+
+──────────────────────────────────────────────
+📚 Résumé des commandes utilisées :
+──────────────────────────────────────────────
+
+cat : affiche le contenu d’un fichier.
+
+grep : filtre des lignes selon un motif.
+
+sed : éditeur de flux (permet de modifier ou filtrer ligne par ligne).
+
+cut : extrait des champs.
+
+rev : inverse les chaînes.
+
+sort : trie les lignes.
+
+tr : traduit/remplace des caractères.
+
+export : crée une variable d’environnement utilisable dans un script.
+
+' : guillemets simples, protègent le contenu sans interprétation.
+
+" : guillemets doubles, interprètent les variables comme ${}.
+
+\ : anti-slash, utilisé pour échapper des caractères spéciaux.
+
+
