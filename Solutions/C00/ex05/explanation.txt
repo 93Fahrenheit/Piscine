@@ -1,0 +1,95 @@
+────────────────────────────────────────────────────────────
+🧠 COMPRENDRE FT_PRINT_COMB EN LANGAGE C (42 - Rank 02)
+────────────────────────────────────────────────────────────
+
+OBJECTIF DE L'EXERCICE
+──────────────────────
+Écrire une fonction `ft_print_comb` qui affiche toutes les combinaisons possibles
+de **trois chiffres différents** compris entre 0 et 9, **dans l’ordre croissant** 
+(et sans doublon). Chaque combinaison est suivie d’une virgule et d’un espace,
+sauf la dernière (789).
+
+EXEMPLES DE SORTIE :
+012, 013, 014, ..., 789
+
+⚠️ ATTENTION : On ne veut afficher QUE les combinaisons avec :
+- des **chiffres tous différents**
+- dans un **ordre croissant**
+  → donc 123 est OK, mais 132, 211, 321, 999 ne le sont PAS.
+
+────────────────────────────────────────────────────────────
+LOGIQUE DE L'ALGORITHME
+────────────────────────────────────────────────────────────
+
+💡 Idée principale :
+Utiliser **3 boucles imbriquées** pour générer tous les triplets possibles,
+en s’assurant automatiquement que les chiffres sont **strictement croissants**
+sans jamais avoir à tester cette condition explicitement.
+
+STRUCTURE DES BOUCLES :
+────────────────────────
+Tu utilises trois variables `i`, `j`, `k` :
+
+Variable | Rôle               | Valeurs possibles | Rythme d’évolution
+---------|--------------------|-------------------|---------------------
+   i     | 1er chiffre        | de 0 à 7          | la plus lente
+   j     | 2e chiffre         | de i + 1 à 8      | moyenne vitesse
+   k     | 3e chiffre         | de j + 1 à 9      | la plus rapide
+
+A chaque tour :
+- `i` commence à 0 et s’incrémente jusqu’à 7 (ensuite il n’y a plus assez de place pour 2 autres chiffres)
+- `j` commence à `i + 1` et s’incrémente jusqu’à 8
+- `k` commence à `j + 1` et s’incrémente jusqu’à 9
+
+Grâce à cette manière d’écrire les boucles :
+✅ on garantit que `i < j < k`
+✅ on évite automatiquement les chiffres répétés
+✅ on évite aussi les combinaisons inversées (du type 210, 321, etc.)
+
+🕰️ ANALOGIE AVEC UNE HORLOGE :
+──────────────────────────────
+Imagine que `i`, `j` et `k` sont trois aiguilles d’horloge :
+
+- `k` est la trotteuse → avance très vite
+- `j` est la grande aiguille → avance plus lentement
+- `i` est la petite aiguille → avance très lentement
+
+Le fonctionnement est le suivant :
+- `k` tourne jusqu’à 9. Ensuite, elle ne peut plus être incrémentée, donc on sort de sa boucle.
+- `j` est alors incrémenté, et `k` est réinitialisé à `j + 1`
+- si `j` dépasse 8, alors on incrémente `i`, et `j` devient `i + 1`, et `k = j + 1`
+- et ainsi de suite...
+
+EXEMPLE PRÉCIS :
+────────────────
+Quand on arrive à afficher la combinaison `039` :
+- `i = 0`, `j = 3`, `k = 9`
+- `k++` dépasse 9 ⇒ on sort de la boucle de `k`
+- `j++` devient 4
+- `k = j + 1 = 5`
+⇒ On continue avec 045, 046, 047...
+
+Donc **on ne passe jamais par 040, 041, 044** : ces combinaisons ne sont même pas générées.
+
+RÉSULTAT :
+──────────
+Cette logique permet d’afficher **uniquement les bonnes combinaisons** :
+- pas besoin de condition du type `if (i != j && j != k && i != k)`
+- pas besoin de vérifier si `i < j < k` car c’est **garanti** par les bornes des boucles.
+
+────────────────────────────────────────────────────────────
+GESTION DE L’AFFICHAGE
+────────────────────────────────────────────────────────────
+
+Chaque combinaison est affichée avec 3 appels à `ft_putchar`, par exemple :
+- ft_putchar(i + '0');
+- ft_putchar(j + '0');
+- ft_putchar(k + '0');
+
+Ensuite, on veut afficher `, ` sauf à la toute dernière combinaison (789).
+
+Donc, on ajoute une condition :
+- `if (i != 7)` → tant qu’on n’est pas à la fin, on affiche la virgule et l’espace
+
+Pourquoi tester `i != 7` ?
+→ Parce que la dernière combinaison valide est `i = 7`, `j = 8`, `k = 9`
