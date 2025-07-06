@@ -1,0 +1,16 @@
+╔═════════════════════════════════════════════╦═══════════════════════════════════════════════╦══════════════════════════════════════════════════════════════╗
+║ ÉLÉMENT                                     ║ VALEUR OU COMPORTEMENT                        ║ EXPLICATION                                                  ║
+╠═════════════════════════════════════════════╬═══════════════════════════════════════════════╬══════════════════════════════════════════════════════════════╣
+║ a                                           ║ 42                                            ║ Variable entière stockée dans `main`                         ║
+║ &a                                          ║ Adresse mémoire (ex: 0x7ffee4b2f8bc)          ║ Adresse de la variable `a`                                   ║
+║ nbr = &a                                    ║ L’adresse de `a`                              ║ `nbr` contient l’adresse de `a`                              ║
+║ nbr                                         ║ Même chose que `&a`                           ║ Pointeur vers un int → il pointe vers `a`                    ║
+║ *nbr 	                                      ║ 42       			              ║ La valeur pointée par `nbr`, donc `a`                        ║
+║ &nbr                                        ║ Adresse mémoire de `nbr`                      ║ Adresse du pointeur lui-même (utile si on veut `int **`)     ║
+║ *(&a)                                       ║ 42                                            ║ Accès à la valeur de `a` en passant par son adresse directe  ║
+║ ft_ft(&a);                                  ║ a devient 42                                  ║ On passe l’adresse de `a` à la fonction `ft_ft`              ║
+║ void ft_ft(int *nbr) { *nbr = 42; }         ║ Change la valeur pointée par `nbr` en 42      ║ Donc modifie directement la valeur de `a`                    ║
+╚═════════════════════════════════════════════╩═══════════════════════════════════════════════╩══════════════════════════════════════════════════════════════╝
+
+
+
