@@ -77,60 +77,50 @@ int ft_atoi_base(char *str, char *base)
 
 int main(void)
 {
-    // Test 1 : Conversion valide (base 10)
+    // base 10
     char *base1 = "0123456789";
     char *str1 = "  -1234";
-    printf("Test 1 : %d\n", ft_atoi_base(str1, base1));  // Résultat attendu : -1234
+    printf("Test 1 : %d\n", ft_atoi_base(str1, base1));  // -1234
 
-    // Test 2 : Base 16 (hexadécimal)
+    // base 16 
     char *base2 = "0123456789ABCDEF";
     char *str2 = "  2F";
-    printf("Test 2 : %d\n", ft_atoi_base(str2, base2));  // Résultat attendu : 47 (en décimal)
+    printf("Test 2 : %d\n", ft_atoi_base(str2, base2));  // 47 
 
-    // Test 3 : Base 2 (binaire)
+    // base 2
     char *base3 = "01";
     char *str3 = "  1101";
-    printf("Test 3 : %d\n", ft_atoi_base(str3, base3));  // Résultat attendu : 13 (en décimal)
+    printf("Test 3 : %d\n", ft_atoi_base(str3, base3));  // 13
 
-    // Test 4 : Base invalide avec un caractère non valide
+    // base non valide : avec caractère non valide (x)
     char *base4 = "0123456789";
-    char *str4 = "1234xyz";
-    printf("Test 4 : %d\n", ft_atoi_base(str4, base4));  // Résultat attendu : 0 (car 'x', 'y' et 'z' ne sont pas dans la base)
+    char *str4 = "1234x567";
+    printf("Test 4 : %d\n", ft_atoi_base(str4, base4));  // 0
 
-    // Test 5 : Base invalide avec doublon
-    char *base5 = "01234567890";  // Doublon de '0'
+    // base non valide : doublon (0)
+    char *base5 = "01234056789"; 
     char *str5 = "12345";
-    printf("Test 5 : %d\n", ft_atoi_base(str5, base5));  // Résultat attendu : 0 (doublon dans la base)
+    printf("Test 5 : %d\n", ft_atoi_base(str5, base5));  // 0
 
-    // Test 6 : Plusieurs signes
+    // str avec signes
     char *base6 = "0123456789";
     char *str6 = "  --+--1234";
-    printf("Test 6 : %d\n", ft_atoi_base(str6, base6));  // Résultat attendu : -1234 (les signes sont traités correctement)
+    printf("Test 6 : %d\n", ft_atoi_base(str6, base6));  // -1234
 
-    // Test 7 : Cas avec un seul signe
+    // str avec un seul signe
     char *base7 = "0123456789";
     char *str7 = " +42";
-    printf("Test 7 : %d\n", ft_atoi_base(str7, base7));  // Résultat attendu : 42 (un seul signe "+" devant le nombre)
+    printf("Test 7 : %d\n", ft_atoi_base(str7, base7));  // 42
 
-    // Test 8 : Base trop courte (1 caractère)
-    char *base8 = "1";  // Base invalide (seulement un caractère)
+    // base non valide : 1 seul char
+    char *base8 = "1";  
     char *str8 = "1234";
-    printf("Test 8 : %d\n", ft_atoi_base(str8, base8));  // Résultat attendu : 0 (base invalide)
+    printf("Test 8 : %d\n", ft_atoi_base(str8, base8));  // 0 
 
-    // Test 9 : Base vide
-    char *base9 = "";  // Base invalide (vide)
+    // Base invalide : base vide
+    char *base9 = "";  
     char *str9 = "1234";
-    printf("Test 9 : %d\n", ft_atoi_base(str9, base9));  // Résultat attendu : 0 (base invalide)
+    printf("Test 9 : %d\n", ft_atoi_base(str9, base9));  // 0 
 
-    return 0;
+    return (0);
 }
-
-/*
-int	main()
-{
-	char *base = "012345abcd";
-	char *str = "++_+e50";
-
-	printf("%d\n", ft_atoi_base(str, base));
-	return (0);
-}*/
