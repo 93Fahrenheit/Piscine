@@ -9,29 +9,6 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-int	check_base(char *base)
-{
-	int	i = 0;
-	int	j;
-
-	if (ft_strlen(base) < 2)
-		return (0);
-	while (base[i])
-	{
-		if (base[i] == '+' || base[i] == '-')
-			return (0);
-		j = i + 1;
-		while (base[j])
-		{
-			if (base[j] == base[i])
-				return (0);
-			j++;
-		}
-		i++;
-	}
-	return (1);
-}
-
 int	get_index(char c, char *base)
 {
 	int	i = 0;
@@ -45,82 +22,113 @@ int	get_index(char c, char *base)
 	return (-1);
 }
 
-int ft_atoi_base(char *str, char *base)
+int	check_base(char *base)
 {
-	int	result;
-	int	sign;
-	int	i;
+	int	i = 0;
+	int	j;
 
-	i = 0;
-	result = 0;
-	sign = 1;
-
-	if (check_base(base) == 0)
+	if (ft_strlen(base) < 2)
 		return (0);
-	while (str[i] >= 9 && str[i] <= 32)
+	while (base[i])
+	{
+		if (base[i] == '+' || base[i] == '-' ||
+			base[i] == ' ' || (base[i] >= 9 && base[i] <= 13))
+			return (0);
+		j = i + 1;
+		while (base[j])
+		{
+			if (base[j] == base[i])
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	check_str(char *str, int *sign)
+{
+	int	i = 0;
+
+	*sign = 1;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	while (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			sign = -sign;
+			*sign = -(*sign);
 		i++;
 	}
-	while (str[i])
+	return (i);
+}
+
+int	ft_atoi_base(char *str, char *base)
+{
+	int	nb;
+	int	sign;
+	int	i;
+	int	base_len;
+	int	idx;
+
+	nb = 0;
+	if (check_base(base) == 0)
+		return (0);
+	base_len = ft_strlen(base);
+	i = check_str(str, &sign);
+	while ((idx = get_index(str[i], base)) != -1)
 	{
-		if (get_index(str[i], base) == -1)
-			return (0);
-		result = result * ft_strlen(base) + get_index(str[i], base);
+		nb = nb * base_len + idx;
 		i++;
 	}
-	return (result * sign);
+	return (nb * sign);
 }
 
 int main(void)
 {
     // base 10
     char *base1 = "0123456789";
-    char *str1 = "  -1234";
-    printf("Test 1 : %d\n", ft_atoi_base(str1, base1));  // -1234
+    char *str1 = " -1234";
+    printf("Test 1 : %d\n", ft_atoi_base(str1, base1)); // -1234
 
-    // base 16 
+    // base 16
     char *base2 = "0123456789ABCDEF";
-    char *str2 = "  2F";
-    printf("Test 2 : %d\n", ft_atoi_base(str2, base2));  // 47 
+    char *str2 = " 2F";
+    printf("Test 2 : %d\n", ft_atoi_base(str2, base2)); // 47
 
     // base 2
     char *base3 = "01";
-    char *str3 = "  1101";
-    printf("Test 3 : %d\n", ft_atoi_base(str3, base3));  // 13
+    char *str3 = " 1101";
+    printf("Test 3 : %d\n", ft_atoi_base(str3, base3)); // 13
 
-    // base non valide : avec caractère non valide (x)
+    // base avec caractère non valide (x)
     char *base4 = "0123456789";
     char *str4 = "1234x567";
-    printf("Test 4 : %d\n", ft_atoi_base(str4, base4));  // 0
+    printf("Test 4 : %d\n", ft_atoi_base(str4, base4)); // 1234
 
     // base non valide : doublon (0)
-    char *base5 = "01234056789"; 
+    char *base5 = "01234056789";
     char *str5 = "12345";
-    printf("Test 5 : %d\n", ft_atoi_base(str5, base5));  // 0
+    printf("Test 5 : %d\n", ft_atoi_base(str5, base5)); // 0
 
-    // str avec signes
+    // str avec plusieurs signes
     char *base6 = "0123456789";
-    char *str6 = "  --+--1234";
-    printf("Test 6 : %d\n", ft_atoi_base(str6, base6));  // -1234
+    char *str6 = " --+---1234";
+    printf("Test 6 : %d\n", ft_atoi_base(str6, base6)); // -1234
 
     // str avec un seul signe
     char *base7 = "0123456789";
     char *str7 = " +42";
-    printf("Test 7 : %d\n", ft_atoi_base(str7, base7));  // 42
+    printf("Test 7 : %d\n", ft_atoi_base(str7, base7)); // 42
 
     // base non valide : 1 seul char
-    char *base8 = "1";  
+    char *base8 = "1";
     char *str8 = "1234";
-    printf("Test 8 : %d\n", ft_atoi_base(str8, base8));  // 0 
+    printf("Test 8 : %d\n", ft_atoi_base(str8, base8)); // 0
 
     // Base invalide : base vide
-    char *base9 = "";  
+    char *base9 = "";
     char *str9 = "1234";
-    printf("Test 9 : %d\n", ft_atoi_base(str9, base9));  // 0 
+    printf("Test 9 : %d\n", ft_atoi_base(str9, base9)); // 0
 
     return (0);
 }

@@ -14,7 +14,7 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-/*int	check_base(char *base)
+int	check_base(char *base)
 {
 	int	i = 0;
 	int	j;
@@ -35,32 +35,8 @@ int	ft_strlen(char *str)
 		i++;
 	}
 	return (1);
-}*/
-
-
-int	check_base(char *base)
-{
-	int	i = 0;
-	int	j;
-
-	if (ft_strlen(base) < 2)
-		return (0);
-	while (base[i])
-	{
-		if (base[i] == '+' || base[i] == '-' ||
-			base[i] == ' ' || (base[i] >= 9 && base[i] <= 13))
-			return (0);
-		j = i + 1;
-		while (base[j])
-		{
-			if (base[j] == base[i])
-				return (0);
-			j++;
-		}
-		i++;
-	}
-	return (1);
 }
+
 
 void	ft_putnbr_base(int nbr, char *base)
 {
@@ -100,11 +76,31 @@ int	main(void)
 	write(1, "\n", 1);
 
 	// base octale
-	ft_putnbr_base(42, "poneyvif"); // yn
+	ft_putnbr_base(42, "poneyvif"); // vn
 	write(1, "\n", 1);
 
 	// base invalide (doublon)
-	ft_putnbr_base(42, "001234"); //
+	ft_putnbr_base(42, "001234"); // 
+	write(1, "\n", 1);
+
+	// base invalide : vide
+	ft_putnbr_base(123, ""); // 
+	write(1, "\n", 1);
+
+	// base invalide : taille 1
+	ft_putnbr_base(123, "0"); //
+	write(1, "\n", 1);
+
+	// base invalide : contient '+'
+	ft_putnbr_base(123, "012+3456789"); //
+	write(1, "\n", 1);
+
+	// base invalide : contient '-'
+	ft_putnbr_base(123, "012-3456789"); //
+	write(1, "\n", 1);
+
+	// base invalide : doublons non adjacents
+	ft_putnbr_base(123, "01234567089"); //
 	write(1, "\n", 1);
 
 	return (0);
