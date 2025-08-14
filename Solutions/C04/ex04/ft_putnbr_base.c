@@ -79,7 +79,7 @@ int	main(void)
 	ft_putnbr_base(42, "poneyvif"); // vn
 	write(1, "\n", 1);
 
-	// base invalide (doublon)
+	// base invalide : doublon qui se suivent
 	ft_putnbr_base(42, "001234"); // 
 	write(1, "\n", 1);
 
@@ -99,7 +99,7 @@ int	main(void)
 	ft_putnbr_base(123, "012-3456789"); //
 	write(1, "\n", 1);
 
-	// base invalide : doublons non adjacents
+	// base invalide : doublons séparés
 	ft_putnbr_base(123, "01234567089"); //
 	write(1, "\n", 1);
 
