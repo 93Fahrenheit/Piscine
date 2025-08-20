@@ -7,81 +7,96 @@ int	ft_strlen(char *str)
 
 	i = 0;
 	while (str[i])
+	{
 		i++;
+	}
 	return (i);
 }
 
-int	ft_get_size(int size, char **strs, char *sep)
+int	get_total_len(int size, char **strs, char *sep)
 {
-	int	nb_char;
 	int	i;
+	int	seps_len;
+	int	strs_len;
 
-	nb_char = 0;
 	i = 0;
+	strs_len = 0;
+	seps_len = ft_strlen(sep) * (size - 1);
 	while (i < size)
 	{
-		nb_char += ft_strlen(strs[i]);
+		strs_len += ft_strlen(strs[i]);
 		i++;
-	}
-	return (nb_char + (ft_strlen(sep) * (size - 1)));
+	}	
+	return (strs_len + seps_len);
 }
 
-char 	*ft_strjoin(int size, char **strs, char *sep)
+char	*ft_strcat(char *dest, char *src)
 {
-	char	*dest;
-	int	dest_size;
 	int	i;
 	int	j;
-	int	k;
-	int	l;
 
 	i = 0;
 	j = 0;
-	k = 0;
-	l = 0;
-
-	if (size == 0)
-	{
-    		dest = malloc(1);
-    		if (!dest)
-        		return (NULL);
-    		dest[0] = '\0';
-    		return (dest);
-	}
-	dest_size = ft_get_size(size, strs, sep) + 1;
-	dest = malloc(sizeof(char) * dest_size);
-	if (!dest)
-		return(NULL);
-
-	while (i < size)
-	{
-		while (strs[i][j])
-		{
-			dest[k] = strs[i][j];
-			k++;
-			j++;
-		}
-		while (sep[l] && i < size - 1)
-		{
-			dest[k] = sep[l];
-			k++;
-			l++;
-		}
-		l = 0;
-		j = 0;
+	while (dest[i])
 		i++;
+	while (src[j])
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
 	}
-	dest[k] = '\0';
+	dest[i] = '\0';
 	return (dest);
 }
 
-int	main()
+char	*ft_strcat_all(char **strs, char *sep, char *dest, int size)
 {
-	char *test[] = {"Hello", "bien", "oui"};
-	char *sep = ", ";
-	
-	char *result = ft_strjoin(3, test, sep);
-	printf("%s\n", result);
-	free(result);
+	int i;
+
+	i = 0;
+	while (i < size)
+	{
+		ft_strcat(dest, strs[i]);
+		if (i < size -1)
+		{
+			ft_strcat(dest, sep);
+		}
+		i++;
+	}
+	return (dest);
+}
+
+char	*ft_strjoin(int size, char **strs, char *sep)
+{
+	char	*dest;
+	int	total_len;
+
+	if (size <= 0)
+	{
+		dest = malloc(1);
+		if (!dest)
+			return (NULL);
+		dest[0] = '\0';
+		return (dest);
+	}
+	total_len = get_total_len(size, strs, sep) + 1;
+	dest = malloc(sizeof(char) * total_len);
+	if (!dest)
+		return (NULL);
+	dest[0] = '\0';
+	ft_strcat_all(strs, sep, dest, size);
+	return (dest);
+}
+
+int main()
+{
+	char *strs[] = {"Hello", "42", "Paris", "I", "am", "tired"};
+	char *strs2[] = {"test", "", "with", "", "empty", "", "strs"};
+	printf("test 1 : %s\n", ft_strjoin(0, strs, ", "));
+	printf("test 2 : %s\n", ft_strjoin(6, strs, ", "));
+	printf("test 3 : %s\n", ft_strjoin(3, strs, ", "));
+	printf("test 4 : %s\n", ft_strjoin(-3, strs, ", "));
+	printf("test 5 : %s\n", ft_strjoin(6, strs2, ", "));
+	printf("test 6 : %s\n", ft_strjoin(8, strs2, ", "));
 	return (0);
 }
