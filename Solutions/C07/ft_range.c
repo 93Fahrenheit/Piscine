@@ -14,10 +14,9 @@ int 	*ft_range(int min, int max)
 	if (!tab)
 		return (NULL);
 
-	while (i <= size)
+	while (i < size)
 	{
-		tab[i] = min;
-		min ++;
+		tab[i] = min + i;
 		i++;
 	}
 	return (tab);
