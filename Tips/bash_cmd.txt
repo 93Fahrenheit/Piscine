@@ -1,6 +1,0 @@
-Tree = arborescence avec indentations
-installation : sudo apt install tree
-commande : tree
-
-zoxide = smarter cd command
-https://github.com/ajeetdsouza/zoxide
